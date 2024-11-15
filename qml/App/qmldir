@@ -1,3 +1,4 @@
-module Main
+module App
 Main 254.0 Main.qml
-Screen01 1.0 Screen01.ui.qml
+Screen01 1.0 Screen01.qml
+Screen01Ui 1.0 Screen01.ui.qml

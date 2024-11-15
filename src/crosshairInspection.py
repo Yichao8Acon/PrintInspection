@@ -8,23 +8,34 @@ class CrossHairInspection:
     def __init__(self):
         self.roi_range = [0, 0, 550, 1000]
         self.search_area1 = [110, 0, 100, 1000]  # vertical edge
-        self.search_area2 = [0, 50, 450, 30]  # horizontal edge
+        self.search_area2 = [0, 130, 450, 50]  # horizontal edge
         self.search_area3 = [900, 400, 50, 500]  # vertical crosshair line
         self.search_area4 = [600, 600, 200, 100]  # horizontal crosshair line
+        # self.roi_range = None
+        # self.search_area1 = None  # vertical edge
+        # self.search_area2 = None  # horizontal edge
+        # self.search_area3 = None  # vertical crosshair line
+        # self.search_area4 = None  # horizontal crosshair line
         self.num_lines = 10
 
     def main(self, img):
-        height, width = img.shape[:2]
-        self.search_area1[3] = height
-        self.search_area2[3] = width
-        img_copy = img.copy()
         # Find vertical edge
         processed = self.preprocess(img)
+        height, width = processed.shape[:2]
+        self.search_area1[3] = height
+        self.search_area2[2] = width
+        img_copy = img.copy()
         transition = self.find_transitions(processed, self.search_area1)
         slope, intercept = self.fit_regression_line(transition, 'vertical')
         for x, y in transition:
             cv.circle(img_copy, (x, y), 3, (0, 255, 0), -1)
+
+        transition = self.find_transitions(processed, self.search_area2, search_dir='vertical')
+        for x, y in transition:
+            cv.circle(img_copy, (x, y), 3, (0, 255, 0), -1)
+
         cv.rectangle(img_copy, self.search_area1, (0, 0, 255), 4)
+        cv.rectangle(img_copy, self.search_area2, (0, 0, 255), 4)
 
         # TODO error prevention
 
@@ -37,7 +48,7 @@ class CrossHairInspection:
         return img
 
     def preprocess(self, img):
-        img = self.get_ROI(img)
+        # img = self.get_ROI(img)
         img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         blurred = cv.GaussianBlur(img, (5, 5), 0)
         kernel = np.ones((5, 5), np.uint8)

@@ -1,0 +1,30 @@
+{
+    "topLeft": {
+        "roi_range": [0, 0, 550, 1000],
+        "search_area1": [110, 0, 100, 1000],
+        "search_area2": [0, 130, 450, 50],
+        "search_area3": [900, 400, 50, 500],
+        "search_area4": [600, 600, 200, 100]
+    },
+    "topRight": {
+        "roi_range": [0, 0, 550, 1000],
+        "search_area1": [1180, 0, 50, 1000],
+        "search_area2": [0, 130, 450, 50],
+        "search_area3": [900, 400, 50, 500],
+        "search_area4": [600, 600, 200, 100]
+    },
+    "bottomLeft": {
+        "roi_range": [0, 0, 550, 1000],
+        "search_area1": [110, 0, 100, 1000],
+        "search_area2": [0, 130, 450, 50],
+        "search_area3": [900, 400, 50, 500],
+        "search_area4": [600, 600, 200, 100]
+    },
+    "bottomRight": {
+        "roi_range": [0, 0, 550, 1000],
+        "search_area1": [110, 0, 100, 1000],
+        "search_area2": [0, 130, 450, 50],
+        "search_area3": [900, 400, 50, 500],
+        "search_area4": [600, 600, 200, 100]
+    }
+}

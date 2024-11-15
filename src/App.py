@@ -41,7 +41,9 @@ class ImageViewerApp(QMainWindow):
         self.camera_worker.unInit(1)
 
     @Slot(QImage, int)
-    def updateImage(self, image, hCamera):
+    def updateImage(self, image, cam):
+        if cam == 0:
+            pass
         self.display_image(image)
         pass
 
@@ -59,11 +61,17 @@ class ImageViewerApp(QMainWindow):
         self.image_label.setPixmap(pixmap)
         self.image_label.setText("")
 
+    def closeEvent(self, event):
+        # Perform cleanup here
+        self.camera_worker.unInit()
+        # Call the parent class's closeEvent
+        super().closeEvent(event)
 
 def main():
     app = QApplication(sys.argv)
     viewer = ImageViewerApp()
     viewer.show()
+
     sys.exit(app.exec())
 
 
