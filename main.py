@@ -1,11 +1,13 @@
 import os
 import sys
 
-from PySide6.QtCore import QUrl, QObject, Signal, Slot, Qt
+from PySide6.QtCore import QUrl, QObject, Signal, Slot
 from PySide6.QtGui import QGuiApplication, QImage
 from PySide6.QtQuick import QQuickView, QQuickImageProvider
+
 sys.path.insert(0, os.path.abspath('src'))
 from src import cameraworker
+
 
 class ImageProvider(QQuickImageProvider, QObject):
     imageUpdated = Signal()  # Signal to notify QML that the image has changed
@@ -50,6 +52,7 @@ if __name__ == "__main__":
     cameraworker = cameraworker.CameraWorker()
     cameraworker.image_ready_event.connect(image_provider.setImage)
     cameraworker.init()
+
 
     def onExit():
         cameraworker.unInit()

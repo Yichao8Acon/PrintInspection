@@ -2,34 +2,44 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-ColumnLayout {
-    id: mainScreen
-    anchors.fill: parent
+
+Column {
+    id: column
+
     ToolBar {
         id: toolBar
-        Layout.fillWidth: true
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: 0
+        anchors.rightMargin: 0
     }
 
-    RowLayout {
-        id: rowLayout
-        Layout.fillWidth: true
+    Row {
+        id: row
+        width: column.width
+        height: column.height * 0.6
 
         Image {
-                id: dynamicImage2
-                // source: "../../assets/images/sample1.BMP"
-                width: rowLayout.width / 2
-
+            id: dynamicImage
+            width: row.width / 2
+            // Layout.preferredWidth: parent.width / 2
+            source: "../../assets/images/sample1.BMP"
+            fillMode: Image.PreserveAspectFit
+            Connections {
+                target: imageProvider
+                function onImageUpdated() {
+                    dynamicImage.source = "image://dynamicImage?" + Date.now()
+                }
             }
-    }
+        }
 
-    Rectangle {
-        Layout.fillWidth: true
-        height: 50
-    }
+        Image {
+            id: image2
+            width: row.width / 2
+            // Layout.preferredWidth: parent.width / 2
+            source: "../../assets/images/sample1.BMP"
+            fillMode: Image.PreserveAspectFit
+        }
 
-    Component.onCompleted: {
-        console.log(mainScreen.width)
-        console.log("Main Screen load complete")
     }
 }
-

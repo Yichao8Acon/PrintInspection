@@ -53,7 +53,7 @@ class MyTestCase(unittest.TestCase):
         inspector.search_area2[2] = width
         print(processed.shape[:2])
         print(inspector.search_area1)
-        cv.rectangle(processed, inspector.search_area1, (0, 0, 255), 4)
+        cv.rectangle(processed, inspector.search_area3, (0, 0, 255), 4)
         cv.imshow('output', processed)
         cv.waitKey(0)
         cv.destroyAllWindows()

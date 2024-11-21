@@ -2,11 +2,12 @@ import json
 import os
 
 import numpy as np
-from PySide6.QtCore import QObject, Signal, Slot, QMutex
+from PySide6.QtCore import QObject, Signal, Slot
 from PySide6.QtGui import QImage
 from crosshairInspection import CrossHairInspection
 import camera
 
+config_file_path='src/searchArea.json'
 
 def cv_to_qt_image(cv_img):
     """
@@ -42,7 +43,7 @@ class CameraWorker(QObject):
         self.botRightInspector = CrossHairInspection()
         self.setSearchArea()
 
-    def setSearchArea(self, config_file='searchArea.json'):
+    def setSearchArea(self, config_file=config_file_path):
         def helper(inspector, name, configs):
             config = configs.get(name, {})
             inspector.roi_range = config.get("roi_range")
@@ -60,7 +61,7 @@ class CameraWorker(QObject):
                 helper(self.botRightInspector, 'bottomRight', searchArea_config)
 
         else:
-            print("Configuration file not found.")
+            print("Search Area JSON Configuration file not found.")
 
     @Slot(int)
     def onFrameReady(self, hCamera, inspectDirection):

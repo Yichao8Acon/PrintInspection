@@ -11,20 +11,12 @@ class CrossHairInspection:
         self.search_area2 = [0, 130, 450, 50]  # horizontal edge
         self.search_area3 = [900, 400, 50, 500]  # vertical crosshair line
         self.search_area4 = [600, 600, 200, 100]  # horizontal crosshair line
-        # self.roi_range = None
-        # self.search_area1 = None  # vertical edge
-        # self.search_area2 = None  # horizontal edge
-        # self.search_area3 = None  # vertical crosshair line
-        # self.search_area4 = None  # horizontal crosshair line
         self.num_lines = 10
 
     def main(self, img):
-        # Find vertical edge
         processed = self.preprocess(img)
-        height, width = processed.shape[:2]
-        self.search_area1[3] = height
-        self.search_area2[2] = width
-        img_copy = img.copy()
+        img_copy = img.copy()  # copy image for drawing and displaying
+
         transition = self.find_transitions(processed, self.search_area1)
         slope, intercept = self.fit_regression_line(transition, 'vertical')
         for x, y in transition:
@@ -34,12 +26,18 @@ class CrossHairInspection:
         for x, y in transition:
             cv.circle(img_copy, (x, y), 3, (0, 255, 0), -1)
 
+        transition = self.find_transitions(processed, self.search_area3)
+        for x, y in transition:
+            cv.circle(img_copy, (x, y), 3, (0, 255, 0), -1)
+
         cv.rectangle(img_copy, self.search_area1, (0, 0, 255), 4)
         cv.rectangle(img_copy, self.search_area2, (0, 0, 255), 4)
+        cv.rectangle(img_copy, self.search_area3, (0, 0, 255), 4)
+        cv.rectangle(img_copy, self.search_area4, (0, 0, 255), 4)
 
         # TODO error prevention
 
-        # start_x, start_y, end_x, end_y = self.compute_detected_line(img, transition, slope, intercept, 'vertical')
+        # start_x, start_y, end_x, end_y = self.compute_detected_line(img, transition, slope, intercept)
         # cv.line(img, (start_x, start_y), (end_x, end_y), (0, 255, 0), 3)
         return img_copy
 
@@ -50,8 +48,8 @@ class CrossHairInspection:
     def preprocess(self, img):
         # img = self.get_ROI(img)
         img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-        blurred = cv.GaussianBlur(img, (5, 5), 0)
-        kernel = np.ones((5, 5), np.uint8)
+        blurred = cv.GaussianBlur(img, (3, 3), 0)
+        kernel = np.ones((3, 3), np.uint8)
         closed = cv.morphologyEx(blurred, cv.MORPH_CLOSE, kernel)
         return closed
 
