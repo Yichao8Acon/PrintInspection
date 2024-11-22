@@ -3,6 +3,7 @@ import sys
 
 from PySide6.QtCore import QUrl, QObject, Signal, Slot
 from PySide6.QtGui import QGuiApplication, QImage
+from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtQuick import QQuickView, QQuickImageProvider
 
 sys.path.insert(0, os.path.abspath('src'))
@@ -30,8 +31,8 @@ class ImageProvider(QQuickImageProvider, QObject):
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
-    view = QQuickView()
-    engine = view.engine()
+    engine = QQmlApplicationEngine()
+
     engine.addImportPath(sys.path[0])
 
     # Set the context property
@@ -42,10 +43,7 @@ if __name__ == "__main__":
 
     # Load the QML file directly
     qml_file_path = QUrl.fromLocalFile("qml/App/Main.qml")  # Replace with your actual QML file path
-    view.setSource(qml_file_path)
-
-    # Show the view
-    view.show()
+    engine.load(qml_file_path)
 
     image_provider.setImage(QImage("assets/images/1.jpg"))
 
@@ -62,5 +60,4 @@ if __name__ == "__main__":
     app.aboutToQuit.connect(onExit)
 
     ex = app.exec()
-    del view
     sys.exit(ex)

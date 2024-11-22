@@ -1,13 +1,12 @@
 import QtQuick
 
-Rectangle {
+Window {
     id: mainWindow
-    width: 1920
-    height: 1080
+    visible: true
+    width: 1080; height: 720
 
     Screen01 {
         id: mainScreen
-        width: mainWindow.width
-        height: mainWindow.height
     }
+
 }
