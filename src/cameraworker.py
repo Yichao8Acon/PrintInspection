@@ -66,16 +66,25 @@ class CameraWorker(QObject):
     @Slot(int)
     def onFrameReady(self, hCamera, inspectDirection):
         index = findCamIndex(hCamera, self.camList)
-
+        channel_id = 0
+        if self.camList[index].DevInfo.GetFriendlyName() != "left":
+            channel_id = 1
         if self.camList[index].image is not None:
             image = self.camList[index].image
+
             if inspectDirection == 0:
-                image = self.topLeftInspector.main(image)
+                if channel_id == 0:
+                    image = self.topLeftInspector.main(image)
+                else:
+                    image = self.topRightInspector.main(image)
             else:
-                image = self.topRightInspector.main(image)
+                if channel_id == 0:
+                    image = self.botLeftInspector.main(image)
+                else:
+                    image = self.botRightInspector.main(image)
 
             qt_image = cv_to_qt_image(image)
-            self.image_ready_event.emit(qt_image, 0)
+            self.image_ready_event.emit(qt_image, channel_id)
 
     def init(self):
         DevList = camera.getCamList()

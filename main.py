@@ -11,7 +11,7 @@ from src import cameraworker
 
 
 class ImageProvider(QQuickImageProvider, QObject):
-    imageUpdated = Signal()  # Signal to notify QML that the image has changed
+    imageUpdated = Signal(int)  # Signal to notify QML that the image has changed
 
     def __init__(self):
         super().__init__(QQuickImageProvider.Image)
@@ -24,9 +24,9 @@ class ImageProvider(QQuickImageProvider, QObject):
             return QImage()
 
     @Slot(QImage, int)
-    def setImage(self, image):
+    def setImage(self, image, id):
         self._image = image
-        self.imageUpdated.emit()
+        self.imageUpdated.emit(id)
 
 
 if __name__ == "__main__":
@@ -39,13 +39,11 @@ if __name__ == "__main__":
     image_provider = ImageProvider()
     engine.addImageProvider("dynamicImage", image_provider)
     engine.rootContext().setContextProperty("imageProvider", image_provider)
-    image_provider.setImage(QImage("assets/images/sample1.BMP"))  # Set an initial image
+    image_provider.setImage(QImage("assets/images/sample1.BMP"), 1)  # Set an initial image
 
     # Load the QML file directly
     qml_file_path = QUrl.fromLocalFile("qml/App/Main.qml")  # Replace with your actual QML file path
     engine.load(qml_file_path)
-
-    image_provider.setImage(QImage("assets/images/1.jpg"))
 
     cameraworker = cameraworker.CameraWorker()
     cameraworker.image_ready_event.connect(image_provider.setImage)

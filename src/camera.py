@@ -122,6 +122,7 @@ class Camera(QObject):
         self.isWaiting = True
         self.frameReadyEvent.emit(hCamera, 0)  # Notify worker class for frame ready signal
         mvsdk.CameraReleaseImageBuffer(hCamera, pRawData)
+
         if mvsdk.CameraGetTriggerMode(self.hCamera) != 2:
             self.isWaiting = False
             return

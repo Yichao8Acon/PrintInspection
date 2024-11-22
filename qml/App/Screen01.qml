@@ -36,7 +36,8 @@ Rectangle {
                             fillMode: Image.PreserveAspectFit
                             Connections {
                                 target: imageProvider
-                                function onImageUpdated() {
+                                function onImageUpdated(id) {
+
                                     dynamicImage.source = "image://dynamicImage?" + Date.now()
                                 }
                             }
