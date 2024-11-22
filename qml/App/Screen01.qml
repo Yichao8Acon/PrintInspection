@@ -1,45 +1,77 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+Rectangle {
+    id: rootArea
+    anchors.fill: parent
+    border.color: "red"; border.width: 2
 
-Column {
-    id: column
+    ColumnLayout {
+        anchors.fill: parent
 
-    ToolBar {
-        id: toolBar
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: 0
-        anchors.rightMargin: 0
-    }
+        ToolBar {
+            Layout.fillWidth: true;
+            Layout.preferredHeight: parent.height / 15
+        }
 
-    Row {
-        id: row
-        width: column.width
-        height: column.height * 0.6
+        Item {
+            Layout.fillWidth: true; Layout.fillHeight: true
 
-        Image {
-            id: dynamicImage
-            width: row.width / 2
-            // Layout.preferredWidth: parent.width / 2
-            source: "../../assets/images/sample1.BMP"
-            fillMode: Image.PreserveAspectFit
-            Connections {
-                target: imageProvider
-                function onImageUpdated() {
-                    dynamicImage.source = "image://dynamicImage?" + Date.now()
+            RowLayout {
+                anchors.fill: parent
+
+                Item {
+                    Layout.fillWidth: true; Layout.fillHeight: true
+
+                    ColumnLayout {
+                        anchors.fill: parent
+
+                        Image {
+                            id: dynamicImage
+                            Layout.fillWidth: true;
+                            Layout.preferredHeight: parent.height * 0.6
+                            source: "../../assets/images/sample1.BMP"
+                            fillMode: Image.PreserveAspectFit
+                            Connections {
+                                target: imageProvider
+                                function onImageUpdated() {
+                                    dynamicImage.source = "image://dynamicImage?" + Date.now()
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            Layout.fillWidth: true; Layout.fillHeight: true
+                            color: "grey"
+                            border.color: "teal"
+                        }
+                    }
+                }
+
+                Item {
+                    Layout.fillWidth: true; Layout.fillHeight: true
+
+                    ColumnLayout {
+                        anchors.fill: parent
+
+                        Image {
+                            id: dynamicImage2
+                            Layout.fillWidth: true;
+                            Layout.preferredHeight: parent.height * 0.6
+                            source: "../../assets/images/sample1.BMP"
+                            fillMode: Image.PreserveAspectFit
+                        }
+
+                        Rectangle {
+                            Layout.fillWidth: true; Layout.fillHeight: true
+                            color: "grey"
+                            border.color: "teal"
+                        }
+                    }
                 }
             }
         }
-
-        Image {
-            id: image2
-            width: row.width / 2
-            // Layout.preferredWidth: parent.width / 2
-            source: "../../assets/images/sample1.BMP"
-            fillMode: Image.PreserveAspectFit
-        }
-
     }
 }
